@@ -7,18 +7,18 @@ WORKDIR /app
 # add `/app/node_modules/.bin` to $PATH
 ENV PATH /app/node_modules/.bin:$PATH
 
-# install npm
+# install python, mysql
 RUN apt update
+RUN apt install -y python3 python3-pip mysql-server mysql-client mysql-common libmysqlclient-dev 
+RUN pip3 install flask flask-mysqldb flask-cors flask-bcrypt flask-jwt-extended
+
+# install npm
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt install -y npm
 
 # install app dependencies
 COPY package.json ./
 RUN npm install
-
-# install python, mysql
-RUN apt install -y python3 python3-pip mysql-server libmysqlclient-dev
-RUN pip3 install flask flask-mysqldb flask-cors flask-bcrypt flask-jwt-extended
 
 # add app
 COPY . ./
